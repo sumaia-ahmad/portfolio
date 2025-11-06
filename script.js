@@ -43,9 +43,10 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 
 // Scroll Animation for Sections
+const isMobile = window.innerWidth <= 768;
 const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -100px 0px'
+    threshold: isMobile ? 0.05 : 0.1,
+    rootMargin: '0px'
 };
 
 const observer = new IntersectionObserver((entries) => {
@@ -59,10 +60,16 @@ const observer = new IntersectionObserver((entries) => {
 
 // Observe all sections and cards
 document.querySelectorAll('section').forEach(section => {
-    section.style.opacity = '0';
-    section.style.transform = 'translateY(30px)';
-    section.style.transition = 'all 0.6s ease-out';
-    observer.observe(section);
+    // Skip animation for mobile or show immediately
+    if (isMobile) {
+        section.style.opacity = '1';
+        section.style.transform = 'translateY(0)';
+    } else {
+        section.style.opacity = '0';
+        section.style.transform = 'translateY(30px)';
+        section.style.transition = 'all 0.6s ease-out';
+        observer.observe(section);
+    }
 });
 
 // Typing Effect for Hero Section
